@@ -115,7 +115,7 @@
             font-style: italic;
         }
 
-        input[type="text"], input[type="date"], input[type="number"], textarea {
+        input[type="text"], input[type="date"], input[type="number"], textarea, select {
             width: 100%;
             padding: 12px;
             border: 1px solid var(--border);
@@ -126,7 +126,7 @@
             transition: border-color 0.2s;
         }
 
-        input[type="text"]:focus, input[type="date"]:focus, textarea:focus {
+        input[type="text"]:focus, input[type="date"]:focus, textarea:focus, select:focus {
             outline: none;
             border-color: var(--accent);
             background-color: #ffffff;
@@ -380,7 +380,14 @@
                 </div>
                 <div class="form-group">
                     <label>Grupo</label>
-                    <input type="text" id="grupo" placeholder="Ej. 1º EMS A">
+                    <select id="grupo">
+                        <option value="" disabled selected>Selecciona un grupo...</option>
+                        <option value="1ºEMS1">1ºEMS1</option>
+                        <option value="1ºEMS2">1ºEMS2</option>
+                        <option value="1ºEMS3">1ºEMS3</option>
+                        <option value="1ºEMS4">1ºEMS4</option>
+                        <option value="1ºEMS5">1ºEMS5</option>
+                    </select>
                 </div>
                 <div class="form-group full-width">
                     <label>Integrantes</label>
@@ -868,7 +875,7 @@
 
         <div class="button-group">
             <button type="button" class="btn-clear" onclick="limpiarFormulario()">Limpiar formulario</button>
-            <button type="button" class="btn-print" onclick="window.print()">Imprimir / Guardar como PDF</button>
+            <button type="button" class="btn-print" onclick="imprimirPDF()">Imprimir / Guardar como PDF</button>
         </div>
     </form>
 </div>
@@ -945,6 +952,28 @@
             });
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
+    }
+
+    // Generar nombre de archivo dinámico al imprimir/guardar PDF
+    function imprimirPDF() {
+        const equipoInput = document.getElementById('equipo').value.trim();
+        // Quitamos espacios y caracteres especiales para evitar errores en el nombre del archivo
+        const equipo = equipoInput.replace(/[^a-zA-Z0-9áéíóúÁÉÍÓÚñÑüÜ]/g, '_') || 'SinEquipo';
+        
+        const grupoSelect = document.getElementById('grupo').value;
+        const grupo = grupoSelect || 'SinGrupo';
+        
+        const originalTitle = document.title;
+        
+        // Al cambiar el document.title, el navegador lo usará como nombre predeterminado del PDF
+        document.title = `${grupo}_${equipo}`;
+        
+        window.print();
+        
+        // Restauramos el título original después de que se abra la ventana de impresión
+        setTimeout(() => {
+            document.title = originalTitle;
+        }, 100);
     }
 </script>
 
