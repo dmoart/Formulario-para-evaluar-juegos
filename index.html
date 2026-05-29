@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rúbrica TECHPLAY - 1º EMS</title>
-    <!-- Librería para generar el PDF -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         :root {
             --primary: #0f172a;
@@ -29,7 +27,11 @@
             --proceso-border: #ef4444;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
         body {
             font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
@@ -39,7 +41,10 @@
             padding: 20px;
         }
 
-        .container { max-width: 1200px; margin: 0 auto; }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
 
         header {
             background-color: var(--primary);
@@ -51,8 +56,17 @@
             text-align: center;
         }
 
-        header h1 { font-size: 28px; margin-bottom: 10px; letter-spacing: 0.5px; }
-        header h2 { font-size: 18px; font-weight: 400; color: #cbd5e1; }
+        header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            letter-spacing: 0.5px;
+        }
+
+        header h2 {
+            font-size: 18px;
+            font-weight: 400;
+            color: #cbd5e1;
+        }
 
         .card {
             background: var(--card-bg);
@@ -73,9 +87,15 @@
         }
 
         .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        
-        .form-group { margin-bottom: 20px; }
-        .form-group.full-width { grid-column: 1 / -1; }
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
 
         label {
             display: block;
@@ -110,7 +130,10 @@
             background-color: #ffffff;
         }
 
-        textarea { resize: vertical; min-height: 120px; }
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
 
         .checkbox-grid {
             display: grid;
@@ -133,10 +156,15 @@
             font-weight: 500;
         }
 
-        .checkbox-label:hover { background-color: #e2e8f0; }
+        .checkbox-label:hover {
+            background-color: #e2e8f0;
+        }
 
         .checkbox-label input[type="checkbox"], .radio-label input[type="radio"] {
-            width: 18px; height: 18px; accent-color: var(--accent); cursor: pointer;
+            width: 18px;
+            height: 18px;
+            accent-color: var(--accent);
+            cursor: pointer;
         }
 
         .info-box {
@@ -147,26 +175,90 @@
             margin-bottom: 20px;
         }
 
-        .info-box p { margin-bottom: 15px; font-size: 15px; }
-        .info-box p:last-child { margin-bottom: 0; }
-        .info-box.highlight { background-color: #fffbeb; border-left-color: #f59e0b; }
+        .info-box p {
+            margin-bottom: 15px;
+            font-size: 15px;
+        }
+        
+        .info-box p:last-child {
+            margin-bottom: 0;
+        }
+
+        .info-box.highlight {
+            background-color: #fffbeb;
+            border-left-color: #f59e0b;
+        }
 
         /* Rubric Tables */
         .table-container {
-            width: 100%; overflow-x: auto; margin-bottom: 20px;
-            border: 1px solid var(--border); border-radius: var(--radius);
+            width: 100%;
+            overflow-x: auto;
+            margin-bottom: 20px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
         }
 
-        table { width: 100%; border-collapse: collapse; min-width: 900px; background-color: white; }
-        th, td { border: 1px solid var(--border); padding: 15px; text-align: left; vertical-align: top; }
-        th { background-color: var(--primary); color: white; font-weight: 600; font-size: 14px; text-transform: uppercase; text-align: center; width: 20%; }
-        th:first-child { width: 20%; text-align: left; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 900px;
+            background-color: white;
+        }
 
-        .criterion-title { font-weight: bold; font-size: 15px; color: var(--primary); display: block; }
-        .rubric-cell { cursor: pointer; transition: all 0.2s; position: relative; font-size: 13.5px; }
-        .rubric-cell:hover { background-color: #f8fafc; }
-        .rubric-cell label { cursor: pointer; display: flex; align-items: flex-start; gap: 10px; font-weight: normal; margin: 0; color: var(--text); }
-        .rubric-cell input[type="radio"] { margin-top: 3px; flex-shrink: 0; }
+        th, td {
+            border: 1px solid var(--border);
+            padding: 15px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        th {
+            background-color: var(--primary);
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+            text-transform: uppercase;
+            text-align: center;
+            width: 20%;
+        }
+
+        th:first-child {
+            width: 20%;
+            text-align: left;
+        }
+
+        .criterion-title {
+            font-weight: bold;
+            font-size: 15px;
+            color: var(--primary);
+            display: block;
+        }
+
+        .rubric-cell {
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+            font-size: 13.5px;
+        }
+
+        .rubric-cell:hover {
+            background-color: #f8fafc;
+        }
+
+        .rubric-cell label {
+            cursor: pointer;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-weight: normal;
+            margin: 0;
+            color: var(--text);
+        }
+
+        .rubric-cell input[type="radio"] {
+            margin-top: 3px;
+            flex-shrink: 0;
+        }
 
         /* Active Rubric Cells */
         .cell-excelente.active { background-color: var(--excelente-bg); box-shadow: inset 0 0 0 2px var(--excelente-border); }
@@ -175,64 +267,108 @@
         .cell-proceso.active { background-color: var(--proceso-bg); box-shadow: inset 0 0 0 2px var(--proceso-border); }
 
         /* General Valuation */
-        .valuation-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 20px; }
-        .recommend-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 20px; }
-
-        .radio-card {
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            padding: 20px; background-color: #f1f5f9; border: 2px solid transparent; border-radius: var(--radius);
-            cursor: pointer; font-weight: bold; transition: all 0.2s; text-align: center;
+        .valuation-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
         }
 
-        .radio-card input { margin-bottom: 10px; transform: scale(1.2); }
+        .recommend-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .radio-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background-color: #f1f5f9;
+            border: 2px solid transparent;
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .radio-card input {
+            margin-bottom: 10px;
+            transform: scale(1.2);
+        }
+
         .radio-card:hover { background-color: #e2e8f0; }
         
         .radio-card.val-excelente.active { background-color: var(--excelente-bg); border-color: var(--excelente-border); color: #166534; }
         .radio-card.val-bueno.active { background-color: var(--bueno-bg); border-color: var(--bueno-border); color: #1e40af; }
         .radio-card.val-basico.active { background-color: var(--basico-bg); border-color: var(--basico-border); color: #854d0e; }
         .radio-card.val-proceso.active { background-color: var(--proceso-bg); border-color: var(--proceso-border); color: #991b1b; }
+        
         .radio-card.rec-card.active { background-color: var(--accent); border-color: var(--accent-hover); color: white; }
 
         .button-group {
-            display: flex; justify-content: flex-end; flex-wrap: wrap; gap: 15px; margin-top: 40px; margin-bottom: 40px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            margin-top: 40px;
+            margin-bottom: 40px;
         }
 
         button {
-            padding: 15px 25px; font-size: 15px; font-weight: bold; border: none; border-radius: var(--radius);
-            cursor: pointer; transition: transform 0.1s, background-color 0.2s; color: white; display: flex; align-items: center; gap: 8px;
+            padding: 15px 25px;
+            font-size: 15px;
+            font-weight: bold;
+            border: none;
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: transform 0.1s, background-color 0.2s;
+            color: white;
         }
 
         button:active { transform: scale(0.98); }
-        .btn-clear { background-color: #64748b; } .btn-clear:hover { background-color: #475569; }
-        .btn-print { background-color: #0ea5e9; } .btn-print:hover { background-color: #0284c7; }
-        .btn-download { background-color: var(--accent); } .btn-download:hover { background-color: var(--accent-hover); }
-        .btn-send { background-color: #10b981; } .btn-send:hover { background-color: #059669; }
 
-        .btn-send:disabled { background-color: #9ca3af; cursor: not-allowed; }
+        .btn-clear { background-color: #64748b; }
+        .btn-clear:hover { background-color: #475569; }
+
+        .btn-print { background-color: #0ea5e9; }
+        .btn-print:hover { background-color: #0284c7; }
 
         .hidden { display: none !important; }
 
         @media (max-width: 768px) {
             .grid-2, .grid-3, .valuation-grid { grid-template-columns: 1fr; }
             .button-group { flex-direction: column; }
-            button { width: 100%; justify-content: center; }
+            button { width: 100%; }
         }
 
-        /* Para el PDF ocultamos estilos oscuros y los botones */
-        .pdf-export-mode .button-group { display: none !important; }
-        .pdf-export-mode body { background-color: white; }
+        @media print {
+            body { background-color: white; padding: 0; color: black; }
+            .card { box-shadow: none; border: 1px solid #cbd5e1; margin-bottom: 20px; page-break-inside: avoid; }
+            .button-group, .help-text { display: none; }
+            textarea { min-height: 60px; }
+            header { background-color: transparent; color: black; box-shadow: none; padding: 0 0 20px 0; border-bottom: 2px solid black; }
+            header h2 { color: #333; }
+            .table-container { border: none; overflow: visible; }
+            table { min-width: 100%; page-break-inside: auto; }
+            tr { page-break-inside: avoid; page-break-after: auto; }
+            th { background-color: #e2e8f0; color: black; }
+            * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+        }
     </style>
 </head>
 <body>
 
-<div class="container" id="contenido-pdf">
+<div class="container">
     <form id="techplay-form">
         <header>
             <h1>Rúbrica para evaluar juegos</h1>
             <h2>Proyecto TECHPLAY – 1º EMS</h2>
         </header>
 
-        <!-- Datos Iniciales -->
         <div class="card">
             <h3>Datos iniciales</h3>
             <div class="grid-2">
@@ -259,14 +395,13 @@
             </div>
         </div>
 
-        <!-- Tipo de juego -->
         <div class="card">
             <h3>Tipo de juego</h3>
             <div class="checkbox-grid">
                 <label class="checkbox-label"><input type="checkbox" name="tipo" value="Juego de mesa"> Juego de mesa</label>
                 <label class="checkbox-label"><input type="checkbox" name="tipo" value="Juego de cartas"> Juego de cartas</label>
                 <label class="checkbox-label"><input type="checkbox" name="tipo" value="Juego de dados"> Juego de dados</label>
-                <label class="checkbox-label"><input type="checkbox" name="tipo" value="Juego de estrategia"> Juego de estrategia</label>
+                <label class="checkbox-label"><input type="checkbox" name="tipo" value="Juego de strategy"> Juego de estrategia</label>
                 <label class="checkbox-label"><input type="checkbox" name="tipo" value="Juego cooperativo"> Juego cooperativo</label>
                 <label class="checkbox-label"><input type="checkbox" name="tipo" value="Videojuego"> Videojuego</label>
                 <label class="checkbox-label"><input type="checkbox" name="tipo" value="Juego de construcción"> Juego de construcción</label>
@@ -291,7 +426,6 @@
             </div>
         </div>
 
-        <!-- Propósito -->
         <div class="card">
             <h3>Propósito de la actividad</h3>
             <div class="info-box highlight">
@@ -301,7 +435,6 @@
             </div>
         </div>
 
-        <!-- Registro de observación -->
         <div class="card">
             <h3>Registro de observación del juego</h3>
             
@@ -389,12 +522,11 @@
 
             <div class="form-group">
                 <label>¿Qué fue lo más interesante del juego?</label>
-                <span class="help-text">Ayuda: Puede ser una regla, una mecánica, una forma de competir, una estrategia, el diseño visual, la temática o la experiencia general.</span>
+                <span class="help-text">Ayuda: Puede ser una regla, una mecánica, una forma de competir, una strategy, el diseño visual, la temática o la experiencia general.</span>
                 <textarea id="obs-interesante"></textarea>
             </div>
         </div>
 
-        <!-- Análisis psicológico -->
         <div class="card">
             <h3>Análisis psicológico de la experiencia de juego</h3>
             <div class="info-box">
@@ -451,7 +583,6 @@
             </div>
         </div>
 
-        <!-- Continuación del análisis general -->
         <div class="card">
             <h3>Continuación del análisis general</h3>
 
@@ -496,7 +627,6 @@
             </div>
         </div>
 
-        <!-- Rúbrica de análisis -->
         <div class="card">
             <h3>Rúbrica de análisis del juego</h3>
             <div class="table-container">
@@ -607,7 +737,6 @@
             </div>
         </div>
 
-        <!-- Mini rúbrica psicológica -->
         <div class="card">
             <h3>Mini rúbrica de análisis psicológico</h3>
             <div class="table-container">
@@ -677,7 +806,6 @@
             </div>
         </div>
 
-        <!-- Valoración final -->
         <div class="card">
             <h3>Valoración final del juego</h3>
             
@@ -707,7 +835,6 @@
             </div>
         </div>
 
-        <!-- Síntesis final -->
         <div class="card">
             <h3>Síntesis final para el proyecto TECHPLAY</h3>
             
@@ -737,11 +864,9 @@
             </div>
         </div>
 
-        <!-- Botones -->
         <div class="button-group">
             <button type="button" class="btn-clear" onclick="limpiarFormulario()">Limpiar formulario</button>
-            <button type="button" class="btn-print" onclick="window.print()">Imprimir / Guardar PDF</button>
-            <button type="button" class="btn-send" onclick="generarYEnviarPDF()">Enviar PDF por correo</button>
+            <button type="button" class="btn-print" onclick="window.print()">Imprimir / Guardar como PDF</button>
         </div>
     </form>
 </div>
@@ -817,80 +942,6 @@
                 document.getElementById(id).classList.add('hidden');
             });
             window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-    }
-
-    // Generar PDF y enviar a Google Apps Script
-    async function generarYEnviarPDF() {
-        // --- ¡IMPORTANTE! REEMPLAZA ESTA URL POR LA QUE TE DIO GOOGLE APPS SCRIPT ---
-        const scriptURL = 'PEGA_AQUI_TU_URL_DE_GOOGLE';
-        // ----------------------------------------------------------------------------
-
-        if (scriptURL === 'PEGA_AQUI_TU_URL_DE_GOOGLE') {
-            alert("Falta configurar la URL de Google Apps Script. Por favor revisa el código HTML.");
-            return;
-        }
-
-        const btn = document.querySelector('.btn-send');
-        const originalText = btn.innerText;
-        btn.innerText = 'Generando PDF y enviando...';
-        btn.disabled = true;
-
-        // Validar datos básicos para el nombre del archivo
-        const equipoValue = document.getElementById('equipo') ? document.getElementById('equipo').value.trim() || "Sin_Equipo" : "Sin_Equipo";
-        const juegoValue = document.getElementById('juego') ? document.getElementById('juego').value.trim() || "Sin_Juego" : "Sin_Juego";
-
-        // Preparar el contenedor (añadir clase para ocultar botones en el PDF)
-        const element = document.getElementById('contenido-pdf');
-        element.classList.add('pdf-export-mode');
-
-        const opt = {
-            margin:       10,
-            filename:     `Evaluacion_${equipoValue}.pdf`,
-            image:        { type: 'jpeg', quality: 0.98 },
-            html2canvas:  { scale: 2, useCORS: true },
-            jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
-        };
-
-        try {
-            // Generar el PDF en base64
-            const pdfBase64 = await html2pdf().set(opt).from(element).outputPdf('datauristring');
-            const base64Data = pdfBase64.split(',')[1]; // Remover el encabezado data:application/pdf...
-
-            // Restaurar la vista normal
-            element.classList.remove('pdf-export-mode');
-
-            // Preparar el paquete de datos
-            const payload = {
-                equipo: equipoValue,
-                juego: juegoValue,
-                fileData: base64Data,
-                mimeType: 'application/pdf',
-                fileName: `Rubrica_${equipoValue}_${juegoValue}.pdf`
-            };
-
-            // Enviar a Google Apps Script
-            const response = await fetch(scriptURL, {
-                method: 'POST',
-                body: JSON.stringify(payload),
-                headers: {
-                    'Content-Type': 'text/plain;charset=utf-8',
-                }
-            });
-
-            if (response.ok) {
-                alert("¡El PDF ha sido generado y enviado correctamente a tus correos!");
-            } else {
-                throw new Error("Respuesta no exitosa del servidor.");
-            }
-
-        } catch (error) {
-            console.error(error);
-            alert("Hubo un error al generar o enviar el archivo. Revisa tu conexión a internet.");
-            element.classList.remove('pdf-export-mode');
-        } finally {
-            btn.innerText = originalText;
-            btn.disabled = false;
         }
     }
 </script>
