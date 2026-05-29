@@ -337,6 +337,9 @@
         .btn-print { background-color: #0ea5e9; }
         .btn-print:hover { background-color: #0284c7; }
 
+        .btn-download { background-color: var(--accent); }
+        .btn-download:hover { background-color: var(--accent-hover); }
+
         .hidden { display: none !important; }
 
         @media (max-width: 768px) {
@@ -369,6 +372,7 @@
             <h2>Proyecto TECHPLAY – 1º EMS</h2>
         </header>
 
+        <!-- Datos Iniciales -->
         <div class="card">
             <h3>Datos iniciales</h3>
             <div class="grid-2">
@@ -395,13 +399,14 @@
             </div>
         </div>
 
+        <!-- Tipo de juego -->
         <div class="card">
             <h3>Tipo de juego</h3>
             <div class="checkbox-grid">
                 <label class="checkbox-label"><input type="checkbox" name="tipo" value="Juego de mesa"> Juego de mesa</label>
                 <label class="checkbox-label"><input type="checkbox" name="tipo" value="Juego de cartas"> Juego de cartas</label>
                 <label class="checkbox-label"><input type="checkbox" name="tipo" value="Juego de dados"> Juego de dados</label>
-                <label class="checkbox-label"><input type="checkbox" name="tipo" value="Juego de strategy"> Juego de estrategia</label>
+                <label class="checkbox-label"><input type="checkbox" name="tipo" value="Juego de estrategia"> Juego de estrategia</label>
                 <label class="checkbox-label"><input type="checkbox" name="tipo" value="Juego cooperativo"> Juego cooperativo</label>
                 <label class="checkbox-label"><input type="checkbox" name="tipo" value="Videojuego"> Videojuego</label>
                 <label class="checkbox-label"><input type="checkbox" name="tipo" value="Juego de construcción"> Juego de construcción</label>
@@ -426,6 +431,7 @@
             </div>
         </div>
 
+        <!-- Propósito -->
         <div class="card">
             <h3>Propósito de la actividad</h3>
             <div class="info-box highlight">
@@ -435,6 +441,7 @@
             </div>
         </div>
 
+        <!-- Registro de observación -->
         <div class="card">
             <h3>Registro de observación del juego</h3>
             
@@ -522,11 +529,12 @@
 
             <div class="form-group">
                 <label>¿Qué fue lo más interesante del juego?</label>
-                <span class="help-text">Ayuda: Puede ser una regla, una mecánica, una forma de competir, una strategy, el diseño visual, la temática o la experiencia general.</span>
+                <span class="help-text">Ayuda: Puede ser una regla, una mecánica, una forma de competir, una estrategia, el diseño visual, la temática o la experiencia general.</span>
                 <textarea id="obs-interesante"></textarea>
             </div>
         </div>
 
+        <!-- Análisis psicológico -->
         <div class="card">
             <h3>Análisis psicológico de la experiencia de juego</h3>
             <div class="info-box">
@@ -583,6 +591,7 @@
             </div>
         </div>
 
+        <!-- Continuación del análisis general -->
         <div class="card">
             <h3>Continuación del análisis general</h3>
 
@@ -627,6 +636,7 @@
             </div>
         </div>
 
+        <!-- Rúbrica de análisis -->
         <div class="card">
             <h3>Rúbrica de análisis del juego</h3>
             <div class="table-container">
@@ -737,6 +747,7 @@
             </div>
         </div>
 
+        <!-- Mini rúbrica psicológica -->
         <div class="card">
             <h3>Mini rúbrica de análisis psicológico</h3>
             <div class="table-container">
@@ -806,6 +817,7 @@
             </div>
         </div>
 
+        <!-- Valoración final -->
         <div class="card">
             <h3>Valoración final del juego</h3>
             
@@ -835,6 +847,7 @@
             </div>
         </div>
 
+        <!-- Síntesis final -->
         <div class="card">
             <h3>Síntesis final para el proyecto TECHPLAY</h3>
             
@@ -864,9 +877,11 @@
             </div>
         </div>
 
+        <!-- Botones -->
         <div class="button-group">
             <button type="button" class="btn-clear" onclick="limpiarFormulario()">Limpiar formulario</button>
             <button type="button" class="btn-print" onclick="window.print()">Imprimir / Guardar como PDF</button>
+            <button type="button" class="btn-download" onclick="descargarTXT()">Descargar respuestas (.txt)</button>
         </div>
     </form>
 </div>
@@ -943,6 +958,125 @@
             });
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
+    }
+
+    // Descargar TXT
+    function descargarTXT() {
+        let txt = "=======================================================\n";
+        txt += "     RÚBRICA DE EVALUACIÓN - PROYECTO TECHPLAY\n";
+        txt += "=======================================================\n\n";
+
+        const getValue = id => document.getElementById(id) ? document.getElementById(id).value.trim() : "";
+        const getCheckboxes = name => Array.from(document.querySelectorAll(`input[name="${name}"]:checked`)).map(cb => cb.value);
+
+        txt += "--- DATOS INICIALES ---\n";
+        txt += `Equipo evaluador: ${getValue('equipo')}\n`;
+        txt += `Grupo: ${getValue('grupo')}\n`;
+        txt += `Integrantes: ${getValue('integrantes').replace(/\n/g, ', ')}\n`;
+        txt += `Fecha: ${getValue('fecha')}\n`;
+        txt += `Juego evaluado: ${getValue('juego')}\n\n`;
+
+        txt += "--- TIPO DE JUEGO ---\n";
+        let tipos = getCheckboxes('tipo');
+        if(document.getElementById('tipo-otro-cb').checked) tipos.push(`Otro: ${getValue('tipo-otro-texto')}`);
+        txt += `Tipos seleccionados: ${tipos.join(', ')}\n`;
+        txt += `Cantidad de jugadores: ${getValue('cantidad-jugadores')}\n`;
+        txt += `Duración: ${getValue('duracion')}\n\n`;
+
+        txt += "--- REGISTRO DE OBSERVACIÓN ---\n";
+        txt += `Objetivo principal:\n${getValue('obs-objetivo')}\n\n`;
+        txt += `Acciones de los jugadores:\n${getValue('obs-acciones')}\n\n`;
+        txt += `Reglas más importantes:\n${getValue('obs-reglas')}\n\n`;
+        
+        let mecanicas = getCheckboxes('mecanica');
+        if(document.getElementById('mecanica-otro-cb').checked) mecanicas.push(`Otro: ${getValue('mecanica-otro-texto')}`);
+        txt += `Mecánicas: ${mecanicas.join(', ')}\n`;
+        txt += `Funcionamiento de mecánicas:\n${getValue('obs-mecanicas-exp')}\n\n`;
+
+        let interaccion = getCheckboxes('interaccion');
+        if(document.getElementById('interaccion-otro-cb').checked) interaccion.push(`Otro: ${getValue('interaccion-otro-texto')}`);
+        txt += `Interacción: ${interaccion.join(', ')}\n`;
+        txt += `Explicación interacción:\n${getValue('obs-interaccion-exp')}\n\n`;
+
+        txt += `Diseño destacado:\n${getValue('obs-diseno')}\n\n`;
+        txt += `Claridad:\n${getValue('obs-claridad')}\n\n`;
+        txt += `Lo más interesante:\n${getValue('obs-interesante')}\n\n`;
+
+        txt += "--- ANÁLISIS PSICOLÓGICO ---\n";
+        txt += `Emociones generadas:\n${getValue('psi-emociones')}\n\n`;
+        txt += `Atención:\n${getValue('psi-atencion')}\n\n`;
+        txt += `Motivación:\n${getValue('psi-motiva')}\n\n`;
+        txt += `Frustración:\n${getValue('psi-frustracion')}\n\n`;
+        txt += `Decisiones:\n${getValue('psi-decisiones')}\n\n`;
+        txt += `Cooperación/Competencia:\n${getValue('psi-cooperacion')}\n\n`;
+        txt += `Permite equivocarse:\n${getValue('psi-error')}\n\n`;
+        txt += `Perfil del jugador:\n${getValue('psi-perfil')}\n\n`;
+
+        txt += "--- CONTINUACIÓN DEL ANÁLISIS ---\n";
+        txt += `Parte confusa/lenta/difícil:\n${getValue('cont-confusa')}\n\n`;
+        txt += `¿Qué mejorarían?:\n${getValue('cont-mejorar')}\n\n`;
+        txt += `Ideas para nuestro juego:\n${getValue('cont-ideas')}\n\n`;
+
+        let ejes = getCheckboxes('eje');
+        if(document.getElementById('eje-otro-cb').checked) ejes.push(`Otro: ${getValue('eje-otro-texto')}`);
+        txt += `Ejes relacionados: ${ejes.join(', ')}\n`;
+        txt += `Justificación de ejes:\n${getValue('cont-eje-exp')}\n\n`;
+
+        txt += "--- RÚBRICA DE ANÁLISIS DEL JUEGO ---\n";
+        const extractRubric = (name, title) => {
+            const selected = document.querySelector(`input[name="${name}"]:checked`);
+            txt += `- ${title}: ${selected ? selected.value : 'Sin evaluar'}\n`;
+        };
+        extractRubric('rub_obj', 'Objetivo del juego');
+        extractRubric('rub_reglas', 'Reglas');
+        extractRubric('rub_mec', 'Mecánicas de juego');
+        extractRubric('rub_din', 'Dinámica entre jugadores');
+        extractRubric('rub_div', 'Diversión e interés');
+        extractRubric('rub_dif', 'Dificultad y equilibrio');
+        extractRubric('rub_dis', 'Diseño visual y materiales');
+        extractRubric('rub_cla', 'Claridad de la información');
+        extractRubric('rub_ori', 'Originalidad');
+        extractRubric('rub_tem', 'Relación con temática');
+        extractRubric('rub_exp', 'Experiencia psicológica');
+        extractRubric('rub_mej', 'Posibilidades de mejora');
+        extractRubric('rub_apo', 'Aporte TECHPLAY');
+        txt += "\n";
+
+        txt += "--- MINI RÚBRICA PSICOLÓGICA ---\n";
+        extractRubric('psi_ate', 'Atención');
+        extractRubric('psi_mot', 'Motivación');
+        extractRubric('psi_fru', 'Manejo de frustración');
+        extractRubric('psi_dec', 'Toma de decisiones');
+        extractRubric('psi_int', 'Interacción emocional');
+        extractRubric('psi_log', 'Sensación de logro');
+        txt += "\n";
+
+        txt += "--- VALORACIÓN FINAL ---\n";
+        const ptj = document.querySelector(`input[name="puntaje_final"]:checked`);
+        txt += `Puntaje general: ${ptj ? ptj.value : 'No seleccionado'}\n`;
+        txt += `Justificación:\n${getValue('val-justificacion')}\n\n`;
+        
+        const rec = document.querySelector(`input[name="recomendar"]:checked`);
+        txt += `¿Recomendarían?: ${rec ? rec.value : 'No seleccionado'}\n`;
+        txt += `¿Por qué?:\n${getValue('val-porque')}\n\n`;
+
+        txt += "--- SÍNTESIS FINAL TECHPLAY ---\n";
+        txt += `Lo mejor del juego fue:\n${getValue('sin-mejor')}\n\n`;
+        txt += `Lo que menos funcionó fue:\n${getValue('sin-peor')}\n\n`;
+        txt += `Idea a adaptar:\n${getValue('sin-idea')}\n\n`;
+        txt += `Mejora si fuera nuestro:\n${getValue('sin-mejora')}\n\n`;
+        txt += `Aprendizaje sobre diseño:\n${getValue('sin-apr-diseno')}\n\n`;
+        txt += `Aprendizaje sobre jugadores:\n${getValue('sin-apr-jugadores')}\n`;
+
+        const blob = new Blob([txt], { type: 'text/plain;charset=utf-8' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        let filename = getValue('juego').replace(/[^a-z0-9]/gi, '_').toLowerCase();
+        if(!filename) filename = 'juego_evaluado';
+        link.download = `rubrica_techplay_${filename}.txt`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
     }
 </script>
 
